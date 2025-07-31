@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📃윤송이 포트폴리오</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" />
+    <link rel="stylesheet" href="css/style.css">
+
+    <script src="lib/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="js/script.js"></script>
+    <script type="text/javascript">
+        // <![CDATA[
+        var colour="random"; // in addition to "random" can be set to any valid colour eg "#f0f" or "red"
+        var sparkles=50;
+        
+        /****************************
+        *  Tinkerbell Magic Sparkle *
+        *(c)2005-13 mf2fm web-design*
+        *  http://www.mf2fm.com/rv  *
+        * DON'T EDIT BELOW THIS BOX *
+        ****************************/
+        var x=ox=400;
+        var y=oy=300;
+        var swide=800;
+        var shigh=600;
+        var sleft=sdown=0;
+        var tiny=new Array();
+        var star=new Array();
+        var starv=new Array();
+        var starx=new Array();
+        var stary=new Array();
+        var tinyx=new Array();
+        var tinyy=new Array();
+        var tinyv=new Array();
+        
+        window.onload=function() { if (document.getElementById) {
+          var i, rats, rlef, rdow;
+          for (var i=0; i<sparkles; i++) {
+            var rats=createDiv(3, 3);
+            rats.style.visibility="hidden";
+            rats.style.zIndex="999";
+            document.body.appendChild(tiny[i]=rats);
+            starv[i]=0;
+            tinyv[i]=0;
+            var rats=createDiv(5, 5);
+            rats.style.backgroundColor="transparent";
+            rats.style.visibility="hidden";
+            rats.style.zIndex="999";
+            var rlef=createDiv(1, 5);
+            var rdow=createDiv(5, 1);
+            rats.appendChild(rlef);
+            rats.appendChild(rdow);
+            rlef.style.top="2px";
+            rlef.style.left="0px";
+            rdow.style.top="0px";
+            rdow.style.left="2px";
+            document.body.appendChild(star[i]=rats);
+          }
+          set_width();
+          sparkle();
+        }}
+        
+        function sparkle() {
+          var c;
+          if (Math.abs(x-ox)>1 || Math.abs(y-oy)>1) {
+            ox=x;
+            oy=y;
+            for (c=0; c<sparkles; c++) if (!starv[c]) {
+              star[c].style.left=(starx[c]=x)+"px";
+              star[c].style.top=(stary[c]=y+1)+"px";
+              star[c].style.clip="rect(0px, 5px, 5px, 0px)";
+              star[c].childNodes[0].style.backgroundColor=star[c].childNodes[1].style.backgroundColor=(colour=="random")?newColour():colour;
+              star[c].style.visibility="visible";
+              starv[c]=50;
+              break;
+            }
+          }
+          for (c=0; c<sparkles; c++) {
+            if (starv[c]) update_star(c);
+            if (tinyv[c]) update_tiny(c);
+          }
+          setTimeout("sparkle()", 40);
+        }
+        
+        function update_star(i) {
+          if (--starv[i]==25) star[i].style.clip="rect(1px, 4px, 4px, 1px)";
+          if (starv[i]) {
+            stary[i]+=1+Math.random()*3;
+            starx[i]+=(i%5-2)/5;
+            if (stary[i]<shigh+sdown) {
+              star[i].style.top=stary[i]+"px";
+              star[i].style.left=starx[i]+"px";
+            }
+            else {
+              star[i].style.visibility="hidden";
+              starv[i]=0;
+              return;
+            }
+          }
+          else {
+            tinyv[i]=50;
+            tiny[i].style.top=(tinyy[i]=stary[i])+"px";
+            tiny[i].style.left=(tinyx[i]=starx[i])+"px";
+            tiny[i].style.width="2px";
+            tiny[i].style.height="2px";
+            tiny[i].style.backgroundColor=star[i].childNodes[0].style.backgroundColor;
+            star[i].style.visibility="hidden";
+            tiny[i].style.visibility="visible"
+          }
+        }
+        
+        function update_tiny(i) {
+          if (--tinyv[i]==25) {
+            tiny[i].style.width="1px";
+            tiny[i].style.height="1px";
+          }
+          if (tinyv[i]) {
+            tinyy[i]+=1+Math.random()*3;
+            tinyx[i]+=(i%5-2)/5;
+            if (tinyy[i]<shigh+sdown) {
+              tiny[i].style.top=tinyy[i]+"px";
+              tiny[i].style.left=tinyx[i]+"px";
+            }
+            else {
+              tiny[i].style.visibility="hidden";
+              tinyv[i]=0;
+              return;
+            }
+          }
+          else tiny[i].style.visibility="hidden";
+        }
+        
+        document.onmousemove=mouse;
+        function mouse(e) {
+          if (e) {
+            y=e.pageY;
+            x=e.pageX;
+          }
+          else {
+            set_scroll();
+            y=event.y+sdown;
+            x=event.x+sleft;
+          }
+        }
+        
+        window.onscroll=set_scroll;
+        function set_scroll() {
+          if (typeof(self.pageYOffset)=='number') {
+            sdown=self.pageYOffset;
+            sleft=self.pageXOffset;
+          }
+          else if (document.body && (document.body.scrollTop || document.body.scrollLeft)) {
+            sdown=document.body.scrollTop;
+            sleft=document.body.scrollLeft;
+          }
+          else if (document.documentElement && (document.documentElement.scrollTop || document.documentElement.scrollLeft)) {
+            sleft=document.documentElement.scrollLeft;
+            sdown=document.documentElement.scrollTop;
+          }
+          else {
+            sdown=0;
+            sleft=0;
+          }
+        }
+        
+        window.onresize=set_width;
+        function set_width() {
+          var sw_min=999999;
+          var sh_min=999999;
+          if (document.documentElement && document.documentElement.clientWidth) {
+            if (document.documentElement.clientWidth>0) sw_min=document.documentElement.clientWidth;
+            if (document.documentElement.clientHeight>0) sh_min=document.documentElement.clientHeight;
+          }
+          if (typeof(self.innerWidth)=='number' && self.innerWidth) {
+            if (self.innerWidth>0 && self.innerWidth<sw_min) sw_min=self.innerWidth;
+            if (self.innerHeight>0 && self.innerHeight<sh_min) sh_min=self.innerHeight;
+          }
+          if (document.body.clientWidth) {
+            if (document.body.clientWidth>0 && document.body.clientWidth<sw_min) sw_min=document.body.clientWidth;
+            if (document.body.clientHeight>0 && document.body.clientHeight<sh_min) sh_min=document.body.clientHeight;
+          }
+          if (sw_min==999999 || sh_min==999999) {
+            sw_min=800;
+            sh_min=600;
+          }
+          swide=sw_min;
+          shigh=sh_min;
+        }
+        
+        function createDiv(height, width) {
+          var div=document.createElement("div");
+          div.style.position="absolute";
+          div.style.height=height+"px";
+          div.style.width=width+"px";
+          div.style.overflow="hidden";
+          return (div);
+        }
+        
+        function newColour() {
+          var c=new Array();
+          c[0]=255;
+          c[1]=Math.floor(Math.random()*256);
+          c[2]=Math.floor(Math.random()*(256-c[1]/2));
+          c.sort(function(){return (0.5 - Math.random());});
+          return ("rgb("+c[0]+", "+c[1]+", "+c[2]+")");
+        }
+        // ]]>
+        </script>
+</head>
+
+<body>
+    <main>
+        <a href="#" class="btn"></a>
+        <header class="header">
+            <div class="inner">
+                <h1 class="logo">
+                    <a href="#">
+                        <img src="img/songyi’s web portfolio.png" alt="">
+                    </a>
+                </h1><!-- .logo end -->
+                <nav class="pc_nav pc">
+                    <ul class="menu">
+                        <li><a href="#section0">Intro</a></li>
+                        <li><a href="#section01">About</a></li>
+                        <li><a href="#section02">Project</a></li>
+                        <li><a href="#section03">Graphic Design</a></li>
+                        <li><a href="#section04">Contact</a></li>
+                    </ul><!-- .menu end -->
+                </nav><!-- .pc_nav end -->
+                <div class="menu_btn mobile">
+                    <img src="img/icons8-menu-64.png" alt="메뉴 전체보기">
+                </div><!-- .menu_btn  end -->
+                <nav class="mobile_nav mobile">
+                    <ul class="mobile_menu">
+                        <li><a href="#section0">Intro</a></li>
+                        <li><a href="#section01">About</a></li>
+                        <li><a href="#section02">Project</a></li>
+                        <li><a href="#section03">Graphic Design</a></li>
+                        <li><a href="#section04">Contact</a></li>
+                    </ul><!-- .menu enㅇ -->
+                </nav><!-- .mobile_nav end -->
+            </div><!-- .inner end -->
+        </header><!-- .header end -->
+        
+        <div class="main_visual" id="section0">
+            <div class="inner">
+                <div class="text_wrap">
+                    <div class="title">
+                        <p class="web">Web Design Publising</p>
+                        <h1><a href="#" class="btn-shine" target="_blank">PORTFOLIO</a></h1>
+                    </div><!-- .title end -->
+                    <p class="name">안녕하세요! 신입 웹 디자이너 & 퍼블리셔 윤송이입니다.</p>
+                </div><!-- .text_wrap end -->
+            </div><!-- .inner end -->
+        </div><!-- .main_visual end -->
+    </main>
+
+    <section class="about" id="section01">
+        <div class="inner">
+            <h2 class="title">About</h2>
+            <div class="wrap">
+                <div class="left">
+                    <img src="img/윤송이-증명사진.png" alt="증명사진">
+                    <div class="infor">
+                        <h3>About</h3>
+                        <div class="name">
+                            <p class="text01">Name</p>
+                            <p class="text02">윤송이</p>
+                        </div><!-- .name end -->
+                        <div class="birth">
+                            <p class="text01">Birth</p>
+                            <p class="text02">2000.06.22</p>
+                        </div><!-- .birth end -->
+                        <div class="Phone">
+                            <p class="text01">Phone</p>
+                            <p class="text02">010.4487.9810</p>
+                        </div><!-- .Phone end -->
+                        <div class="Email">
+                            <p class="text01">Email</p>
+                            <p class="text02">songyi6811@gmail.com</p>
+                        </div><!-- .Email end -->
+                    </div><!-- .infor end -->
+                </div><!-- .left end -->
+                <div class="right">
+                    <div class="intro">
+                        <h3><img src="img/Songyi Yoon.png" alt="이름"></h3>
+                        <p>안녕하세요 신입 웹 디자이너 & 퍼블리셔 윤송이입니다.<br>
+                            다양한 경험을 통해 웹 디자인과 퍼블리싱 분야에서 넓은 시각을 키워왔습니다. <br>
+                            사용자에게 편리하고 주제에 맞는 창의적 디자인을 제공하며 웹 디자이너 & 퍼블리셔로 성장하고 있습니다. <br>
+                            앞으로도 계속해서 학습하고 발전하여, 트렌드를 반영한 매력적인 웹사이트를 만들어가겠습니다.</p>
+                    </div><!-- intro end -->
+                    <div class="Education">
+                        <h3>Education</h3>
+                        <div class="text">
+                            <p class="text01">2019.01</p>
+                            <p class="text02">호치민시한국국제학교 졸업</p>
+                        </div><!-- .text end -->
+                        <div class="text">
+                            <p class="text01">2019.03</p>
+                            <p class="text02">상명대학교 역사콘텐츠학과 입학</p>
+                        </div><!-- .text end -->
+                        <div class="text">
+                            <p class="text01">2022.02</p>
+                            <p class="text02">상명대학교 역사콘텐츠학과 중퇴</p>
+                        </div><!-- .text end -->
+                        <div class="text">
+                            <p class="text01">2024.08 - 2025.01</p>
+                            <p class="text02">반응형 UI/UX 웹디자인 & 웹퍼블리셔 웹콘텐츠 개발자 양성과정 24-2</p>
+                        </div><!-- .text end -->
+                    </div><!-- .Education end -->
+                    <div class="Certificate">
+                        <h3>Certificate</h3>
+                        <div class="text">
+                            <p class="text01">2024.12</p>
+                            <p class="text02">웹디자인기능사</p>
+                        </div><!-- .text end -->
+                        <div class="text">
+                            <p class="text01">2024.03</p>
+                            <p class="text02">컴퓨터활용능력 2급</p>
+                        </div><!-- .text end -->
+                    </div><!-- .Certificate end -->
+                    <div class="Skills">
+                        <h3>Skills</h3>
+                        <img src="img/image 1.png" alt="icon1">
+                        <img src="img/image 2.png" alt="icon2">
+                        <img src="img/image 3.png" alt="icon3">
+                        <img src="img/image 6.png" alt="icon4">
+                        <img src="img/image 9.png" alt="icon5">
+                        <img src="img/image 4.png" alt="icon6">
+                        <img src="img/image 5.png" alt="icon7">
+                        <img src="img/image 7.png" alt="icon8">
+                        <img src="img/image 8.png" alt="icon9">
+                    </div><!-- .Skills end -->
+                </div><!-- .right end -->
+            </div><!-- .wrap end -->
+        </div><!-- .inner end -->
+    </section><!-- .about end -->
+
+    <section class="project" id="section02">
+        <div class="inner">
+            <h2 class="title">Project</h2>
+
+            <div class="knotted">
+                <div class="left">
+                    <p>스크린에 마우스를 올려보세요!</p>
+                    <p>화면을 터치해 보세요!</p>
+                    <div class="mockup">
+                        <div class="image_box">
+                            <img src="img/노티드desktop-최종.jpg" alt="노티드 PC">
+                            <img src="img/노티드-mockup-tablet.jpg" alt="노티드 PC">
+                            <img src="img/노티드-mockup-table03t.jpg" alt="노티드 PC">
+                            <img src="img/노티드-mockup-table05t.jpg" alt="노티드 PC">
+
+                        </div><!-- .image_box end -->
+                        <div class="mockup_mobile">
+                            <div class="image_mobile">
+                                <img src="img/노티드moblie-최종.jpg" alt="노티드 모바일">
+                                <img src="img/노티드-mockup-table02t.jpg" alt="노티드 모바일">
+                                <img src="img/노티드-mockup-table04t.jpg" alt="노티드 모바일">
+                                <img src="img/노티드-mockup-table06t.jpg" alt="노티드 모바일">
+                            </div><!-- .image_mobile end -->
+                        </div><!-- .mockup_mobile end -->
+                    </div><!-- .mockup end -->
+                </div><!-- .left end -->
+
+                <div class="right">
+                    <div class="sub_title">
+                        <div class="text">
+                            <h3>노티드</h3>
+                            <p>노티드 반응형 메인페이지, 서브페이지 리뉴얼</p>
+                        </div><!-- .text end -->
+                        <div class="img">
+                            <img src="img/노티드qr.jpg" alt="노티드qr">
+                            <p>Mobile QR</p>
+                        </div><!-- .img end -->
+                    </div><!-- .sub_title end -->
+
+                    <div class="content">
+                        <div class="lang">
+                            <p class="text01">언어</p>
+                            <p class="text02">HTML, CSS, JavaScript</p>
+                        </div><!-- .lang end -->
+                        <div class="program">
+                            <p class="text01">프로그램</p>
+                            <p class="text02">Figma, Visual Studio Code</p>
+                        </div><!-- .lang end -->
+                        <div class="contribution">
+                            <p class="text01">기여도</p>
+                            <p class="text02">기획, 디자인, 퍼블리싱 100%</p>
+                        </div><!-- .lang end -->
+                        <div class="page">
+                            <p class="text01">제작 페이지</p>
+                            <p class="text02">메인 페이지, 서브 페이지</p>
+                        </div><!-- .lang end -->
+                    </div><!-- .content end -->
+
+                    <div class="btn">
+                        <button type="button" onclick="window.open('https://www.figma.com/design/ksuz9QoUrju4idABfmOb1E/%EB%85%B8%ED%8B%B0%EB%93%9C---%EC%9B%B9%EC%82%AC%EC%9D%B4%ED%8A%B8-%EB%B0%98%EC%9D%91%ED%98%95-%EB%A6%AC%EB%94%94%EC%9E%90%EC%9D%B8?node-id=0-1&p=f&t=PWCN47IcfbJvSC2n-0')">Figma</button>
+                        <button type="button" onclick="window.open('img/노티드-프로세스.pdf')">Process</button>
+                        <button type="button" onclick="window.open('https://songyi6811.github.io/knotted/')">Website</button>
+                    </div><!-- .btn end -->
+                </div><!-- .right end -->
+            </div><!-- .knotted end -->
+            <div class="threece">
+                <div class="left">
+                    <p>스크린에 마우스를 올려보세요!</p>
+                    <p>화면을 터치해 보세요!</p>
+                    <div class="mockup">
+                        <div class="image_box">
+                            <img src="img/3CEpc-mockup.jpg" alt="3CE PC">
+                            <img src="img/3CEpc-mockup-tablet.jpg" alt="3CE PC">
+                            <img src="img/3CEpc-mockup-tablet03.jpg" alt="3CE PC">
+                            <img src="img/3CEpc-mockup-tablet05.jpg" alt="3CE PC">
+                        </div><!-- .image_box end -->
+                        <div class="mockup_mobile">
+                            <div class="image_mobile">
+                                <img src="img/3CEmobile-mockup.jpg" alt="3CE 모바일">
+                                <img src="img/3CEpc-mockup-tablet02.jpg" alt="3CE 모바일">
+                                <img src="img/3CEpc-mockup-tablet04.jpg" alt="3CE 모바일">
+                                <img src="img/3CEpc-mockup-tablet06.jpg" alt="3CE 모바일">
+                            </div><!-- .image_mobile end -->
+                        </div><!-- .mockup_mobile end -->
+                    </div><!-- .mockup end -->
+                </div><!-- .left end -->
+
+                <div class="right">
+                    <div class="sub_title">
+                        <div class="text">
+                            <h3>3CE</h3>
+                            <p>3CE 반응형 메인페이지 리뉴얼</p>
+                        </div><!-- .text end -->
+                        <div class="img">
+                            <img src="img/3ceqr.jpg" alt="3CEqr">
+                            <p>Mobile QR</p>
+                        </div><!-- .img end -->
+                    </div><!-- .sub_title end -->
+
+                    <div class="content">
+                        <div class="lang">
+                            <p class="text01">언어</p>
+                            <p class="text02">HTML, CSS, JavaScript</p>
+                        </div><!-- .lang end -->
+                        <div class="program">
+                            <p class="text01">프로그램</p>
+                            <p class="text02">Photoshop, Visual Studio Code</p>
+                        </div><!-- .lang end -->
+                        <div class="contribution">
+                            <p class="text01">기여도</p>
+                            <p class="text02">기획, 디자인, 퍼블리싱 100%</p>
+                        </div><!-- .lang end -->
+                        <div class="page">
+                            <p class="text01">제작 페이지</p>
+                            <p class="text02">메인 페이지</p>
+                        </div><!-- .lang end -->
+                    </div><!-- .content end -->
+
+                    <div class="btn">
+                        <button type="button" onclick="window.open('img/3ce-프로세스.pdf')">Process</button>
+                        <button type="button" onclick="window.open('https://songyi6811.github.io/3CE/')">Website</button>
+                    </div><!-- .btn end -->
+                </div><!-- .right end -->
+            </div><!-- .threece end -->
+            <div class="yoajung">
+                <div class="left">
+                    <p>스크린에 마우스를 올려보세요!</p>
+                    <p>화면을 터치해 보세요!</p>
+                    <div class="mockup">
+                        <div class="image_box">
+                            <img src="img/요아정pc-mockup.jpg" alt="요아정 PC">
+                            <img src="img/요아정pc-mockup-tablet.jpg" alt="요아정 PC">
+                            <img src="img/요아정pc-mockup-tablet03.jpg" alt="요아정 PC">
+                            <img src="img/요아정pc-mockup-tablet05.jpg" alt="요아정 PC">
+                        </div><!-- .image_box end -->
+                        <div class="mockup_mobile">
+                            <div class="image_mobile">
+                                <img src="img/요아정mobile-mockup.jpg" alt="요아정 모바일">
+                                <img src="img/요아정pc-mockup-tablet02.jpg" alt="요아정 모바일">
+                                <img src="img/요아정pc-mockup-tablet04.jpg" alt="요아정 모바일">
+                                <img src="img/요아정pc-mockup-tablet06.jpg" alt="요아정 모바일">
+                            </div><!-- .image_mobile end -->
+                        </div><!-- .mockup_mobile end -->
+                    </div><!-- .mockup end -->
+                </div><!-- .left end -->
+
+                <div class="right">
+                    <div class="sub_title">
+                        <div class="text">
+                            <h3>요아정</h3>
+                            <p>요아정 반응형 메인페이지 리뉴얼</p>
+                        </div><!-- .text end -->
+                        <!-- <div class="img">
+                            <img src="img/" alt="요아정qr">
+                            <p>Mobile QR</p>
+                        </div> -->
+                    </div><!-- .sub_title end -->
+
+                    <div class="content">
+                        <div class="lang">
+                            <p class="text01">언어</p>
+                            <p class="text02">HTML, CSS, JavaScript</p>
+                        </div><!-- .lang end -->
+                        <div class="program">
+                            <p class="text01">프로그램</p>
+                            <p class="text02">Photoshop, Visual Studio Code</p>
+                        </div><!-- .lang end -->
+                        <div class="contribution">
+                            <p class="text01">기여도</p>
+                            <p class="text02">기획, 디자인, 퍼블리싱 100%</p>
+                        </div><!-- .lang end -->
+                        <div class="page">
+                            <p class="text01">제작 페이지</p>
+                            <p class="text02">메인 페이지</p>
+                        </div><!-- .lang end -->
+                    </div><!-- .content end -->
+
+                    <div class="btn">
+                        <button type="button">Process</button>
+                        <button type="button" onclick="window.open('https://songyi6811.github.io/yoajung-main/')">Website</button>
+                    </div><!-- .btn end -->
+                </div><!-- .right end -->
+            </div><!-- .yoajung end -->
+            <div class="urlala">
+                <div class="left">
+                    <p>스크린에 마우스를 올려보세요!</p>
+                    <p>화면을 터치해 보세요!</p>
+                    <div class="mockup">
+                        <div class="image_box">
+                            <img src="img/울랄라-mockup.png" alt="울랄라 PC">
+                            <img src="img/울랄라-mockup-tablet.jpg" alt="울랄라 PC">
+                            <img src="img/울랄라-mockup-tablet02.jpg" alt="울랄라 PC">
+                            <img src="img/울랄라-mockup-tablet03.jpg" alt="울랄라 PC">
+                        </div><!-- .image_box end -->
+                    </div><!-- .mockup end -->
+                </div><!-- .left end -->
+
+                <div class="right">
+                    <div class="sub_title">
+                        <div class="text">
+                            <h3>울랄라</h3>
+                            <p>울랄라 메인페이지 디자인 & 모작</p>
+                        </div><!-- .text end -->
+                        <div class="img">
+                        </div><!-- .img end -->
+                    </div><!-- .sub_title end -->
+
+                    <div class="content">
+                        <div class="lang">
+                            <p class="text01">언어</p>
+                            <p class="text02">HTML, CSS, JavaScript</p>
+                        </div><!-- .lang end -->
+                        <div class="program">
+                            <p class="text01">프로그램</p>
+                            <p class="text02">Photoshop, Visual Studio Code</p>
+                        </div><!-- .lang end -->
+                        <div class="contribution">
+                            <p class="text01">기여도</p>
+                            <p class="text02">디자인 50%, 퍼블리싱 100%</p>
+                        </div><!-- .lang end -->
+                        <div class="page">
+                            <p class="text01">제작 페이지</p>
+                            <p class="text02">메인 페이지</p>
+                        </div><!-- .lang end -->
+                    </div><!-- .content end -->
+
+                    <div class="btn">
+                        <button type="button">Process</button>
+                        <button type="button" onclick="window.open('https://songyi6811.github.io/ulrara/')">Website</button>
+                    </div><!-- .btn end -->
+                </div><!-- .right end -->
+            </div><!-- .urlala end -->
+            <div class="lejore">
+                <div class="left">
+                    <p>스크린에 마우스를 올려보세요!</p>
+                    <p>화면을 터치해 보세요!</p>
+                    <div class="mockup">
+                        <div class="image_box">
+                            <img src="img/르주르-mockup.png" alt="르주르 PC">
+                            <img src="img/르주르-mockup-tablet.jpg" alt="르주르 PC">
+                            <img src="img/르주르-mockup-tablet02.jpg" alt="르주르 PC">
+                            <img src="img/르주르-mockup-tablet03.jpg" alt="르주르 PC">
+                        </div><!-- .image_box end -->
+                    </div><!-- .mockup end -->
+                </div><!-- .left end -->
+
+                <div class="right">
+                    <div class="sub_title">
+                        <div class="text">
+                            <h3>르주르</h3>
+                            <p>르주르 메인페이지 모작</p>
+                        </div><!-- .text end -->
+                        <div class="img">
+                        </div><!-- .img end -->
+                    </div><!-- .sub_title end -->
+
+                    <div class="content">
+                        <div class="lang">
+                            <p class="text01">언어</p>
+                            <p class="text02">HTML, CSS, JavaScript</p>
+                        </div><!-- .lang end -->
+                        <div class="program">
+                            <p class="text01">프로그램</p>
+                            <p class="text02">Visual Studio Code</p>
+                        </div><!-- .lang end -->
+                        <div class="contribution">
+                            <p class="text01">기여도</p>
+                            <p class="text02">퍼블리싱 100%</p>
+                        </div><!-- .lang end -->
+                        <div class="page">
+                            <p class="text01">제작 페이지</p>
+                            <p class="text02">메인 페이지</p>
+                        </div><!-- .lang end -->
+                    </div><!-- .content end -->
+
+                    <div class="btn">
+                        <button type="button" onclick="window.open('https://songyi6811.github.io/le-jore/')">Website</button>
+                    </div><!-- .btn end -->
+                </div><!-- .right end -->
+            </div><!-- .lejore end -->
+            <div class="josun">
+                <div class="left">
+                    <p>스크린에 마우스를 올려보세요!</p>
+                    <p>화면을 터치해 보세요!</p>
+                    <div class="mockup">
+                        <div class="image_box">
+                            <img src="img/조선미녀-mockup.png" alt="조선미녀 PC">
+                            <img src="img/조선미녀-mockup-tablet.jpg" alt="조선미녀 PC">
+                            <img src="img/조선미녀-mockup-tablet02.jpg" alt="조선미녀 PC">
+                            <img src="img/조선미녀-mockup-tablet03.jpg" alt="조선미녀 PC">
+                        </div><!-- .image_box end -->
+                    </div><!-- .mockup end -->
+                </div><!-- .left end -->
+
+                <div class="right">
+                    <div class="sub_title">
+                        <div class="text">
+                            <h3>조선미녀</h3>
+                            <p>조선미녀 메인페이지 모작</p>
+                        </div><!-- .text end -->
+                        <div class="img">
+                        </div><!-- .img end -->
+                    </div><!-- .sub_title end -->
+
+                    <div class="content">
+                        <div class="lang">
+                            <p class="text01">언어</p>
+                            <p class="text02">HTML, CSS, JavaScript</p>
+                        </div><!-- .lang end -->
+                        <div class="program">
+                            <p class="text01">프로그램</p>
+                            <p class="text02">Visual Studio Code</p>
+                        </div><!-- .lang end -->
+                        <div class="contribution">
+                            <p class="text01">기여도</p>
+                            <p class="text02">퍼블리싱 100%</p>
+                        </div><!-- .lang end -->
+                        <div class="page">
+                            <p class="text01">제작 페이지</p>
+                            <p class="text02">메인 페이지</p>
+                        </div><!-- .lang end -->
+                    </div><!-- .content end -->
+
+                    <div class="btn">
+                        <button type="button" onclick="window.open('https://songyi6811.github.io/beautyofjoseon/')">Website</button>
+                    </div><!-- .btn end -->
+                </div><!-- .right end -->
+            </div><!-- .josun end -->
+            <div class="tamber">
+                <div class="right">
+                    <div class="sub_title">
+                        <div class="text">
+                            <h3>탬버린즈</h3>
+                            <p>탬버린즈 모바일앱 리디자인</p>
+                        </div><!-- .text end -->
+                        <div class="img">
+                            <img src="img/탬버린즈.jpg" alt="탬버린즈qr">
+                            <p>Mobile QR</p>
+                        </div><!-- .img end -->
+                    </div><!-- .sub_title end -->
+
+                    <div class="content">
+                        <div class="program">
+                            <p class="text01">프로그램</p>
+                            <p class="text02">Photoshop, Figma</p>
+                        </div><!-- .lang end -->
+                        <div class="contribution">
+                            <p class="text01">기여도</p>
+                            <p class="text02">기획, 디자인 100%</p>
+                        </div><!-- .lang end -->
+                        <div class="page">
+                            <p class="text01">제작 페이지</p>
+                            <p class="text02">메인 페이지, 서브 페이지</p>
+                        </div><!-- .lang end -->
+                    </div><!-- .content end -->
+
+                    <div class="btn">
+                        <button type="button" onclick="window.open('https://www.figma.com/design/yMIYTAm1XQYpGC2oAPkv4N/tambarism?node-id=0-1&p=f&t=mi6tkdz0RueQDFxV-0')">Process</button>
+                        <button type="button" onclick="window.open('https://www.figma.com/proto/yMIYTAm1XQYpGC2oAPkv4N/tambarism?node-id=1-83&p=f&t=jz7vaDeZU6bvdDey-0&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=1%3A83')">Website</button>
+                    </div><!-- .btn end -->
+                </div><!-- .right end -->
+                <div class="mockup">
+                    <img src="img/탬버린즈.png" alt="">
+                </div><!-- .mockup -->
+            </div><!-- .tamber end -->
+
+            
+        </div><!-- .inner end -->
+    </section><!-- .project end -->
+
+    <section class="graphic" id="section03">
+            <div class="inner">
+                <h2 class="title">Graphic Design</h2>
+                <p>Photoshop & Illustrator로 디자인한 작업물입니다. <br>
+                    (클릭시 이미지가 확대됩니다.)
+                    </p>
+                <div class="fancy-box">
+                    <a href="img/포토샵-포스터01.jpg" data-fancybox="gallery"><img src="img/포토샵-포스터01.jpg" width="350px" height="200px"></a>
+                    <a href="img/포토샵-포스터03.jpg" data-fancybox="gallery"><img src="img/포토샵-포스터03.jpg" width="350px" height="200px"></a>
+                    <a href="img/포토샵-포스터04.jpg" data-fancybox="gallery"><img src="img/포토샵-포스터04.jpg" width="350px" height="200px"></a>
+                    <a href="img/포토샵-포스터05.jpg" data-fancybox="gallery"><img src="img/포토샵-포스터05.jpg" width="350px" height="200px"></a>
+                    <a href="img/포토샵-포스터06.jpg" data-fancybox="gallery"><img src="img/포토샵-포스터06.jpg" width="350px" height="200px"></a>
+                    <a href="img/일러스트-포스터01.png" data-fancybox="gallery"><img src="img/일러스트-포스터01.png" width="350px" height="200px"></a>
+                    <a href="img/포토샵-배너01.jpg" data-fancybox="gallery"><img src="img/포토샵-배너01.jpg" width="350px" height="200px"></a>
+                    <a href="img/포토샵-포스터07.jpg" data-fancybox="gallery"><img src="img/포토샵-포스터07.jpg" width="350px" height="200px"></a>
+                    <a href="img/포토샵-포스터08.jpg" data-fancybox="gallery"><img src="img/포토샵-포스터08.jpg" width="350px" height="200px"></a>
+                    <a href="img/포토샵-포스터09.jpg" data-fancybox="gallery"><img src="img/포토샵-포스터09.jpg" width="350px" height="200px"></a>
+                    <a href="img/포토샵-포스터10.jpg" data-fancybox="gallery"><img src="img/포토샵-포스터10.jpg" width="350px" height="200px"></a>
+                </div>      
+    </section><!-- .graphic end -->
+  
+    <section class="contact" id="section04">
+        <div class="inner">
+            <div class="thank">
+                <div class='typing'><h1 class="text"></h1></div>
+            </div><!-- .thank end -->
+            <div class="in_box">
+                <h2 class="title">Contact</h2>
+                <div class="up">
+                    <div class="qr">
+                        <img src="img/KakaoTalk_20250106_141828550 1.png" alt="카카오톡 qr">
+                    </div><!-- .qr end -->
+                    <div class="text">
+                        <div class="phone">
+                            <img src="img/icons8-phone-48.png" alt="휴대폰 아이콘">
+                            <p>010.4487.9810</p>
+                        </div><!-- .phone end -->
+                        <div class="email">
+                            <img src="img/icons8-email-48.png" alt="이메일 아이콘">
+                            <p>songyi6811@gmail.com</p>
+                        </div><!-- .email end -->
+                        <div class="git">
+                            <img src="img/icons8-github-48.png" alt="깃허브 아이콘">
+                            <button type="button" onclick="window.open('https://github.com/songyi6811')">Github 바로가기</button>
+                        </div><!-- .git end -->
+                    </div><!-- .text end -->
+                </div><!-- .up end -->
+                <div class="down">
+                    <!-- !!!!!!!!!!!나중에 이력서랑 포폴 pdf 추가하기!!!!!!!!!!!!! -->
+                    <button type="button" onclick="window.open('img/윤송이 입사지원서.docx')">Resume PDF</button>
+                    <button type="button" onclick="window.open('img/포트폴리오pdf.pdf')">Portfolio PDF</button>
+                </div><!-- .down end -->
+            </div><!-- .text end -->
+        </div><!-- .inner end -->
+        <div class="copyright">
+            <div class="text">
+                <p>본 사이트는 상업적 목적이 아닌 개인포트폴리오 사이트로 제작되었습니다. <br>
+                    일부 이미지와 폰트 등은 그 출처가 따로 있음을 밝힙니다.
+                </p>
+                <p>Copyrightⓒ2025.Songyi Yoon.All rightsreserved.</p>
+            </div><!-- .text end -->
+        </div><!-- .copyright end -->
+    </section><!-- .contact end -->
+
+</body>
+
+</html>
